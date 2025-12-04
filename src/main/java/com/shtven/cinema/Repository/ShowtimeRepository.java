@@ -1,0 +1,17 @@
+package com.shtven.cinema.Repository;
+
+import com.shtven.cinema.Model.Showtimes;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public interface ShowtimeRepository extends JpaRepository<Showtimes, Long> {
+
+    @Query("SELECT s FROM Showtimes s WHERE s.movie.idMovie= :idMovie AND s.active=true")
+    List<Showtimes> findByMovieIdMovieAndActiveTrue(@Param("idMovie")Long idMovie);
+
+    @Query("SELECT s FROM Showtimes s WHERE s.movie.idMovie= :idMovie")
+    List<Showtimes> findByMovieIdMovie(@Param("idMovie")Long idMovie);
+}

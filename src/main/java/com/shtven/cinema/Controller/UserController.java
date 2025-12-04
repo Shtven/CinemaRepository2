@@ -1,9 +1,7 @@
 package com.shtven.cinema.Controller;
 
 import com.shtven.cinema.DTO.Request.LoginRequest;
-import com.shtven.cinema.DTO.Request.RegisterRequest;
-import com.shtven.cinema.DTO.Responsive.AuthResponse;
-import com.shtven.cinema.DTO.Responsive.UserResponse;
+import com.shtven.cinema.Model.Users;
 import com.shtven.cinema.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,24 +9,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/auth")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-
-    // REGISTRO CORREGIDO
-    @PostMapping("/registro")
-    public ResponseEntity<UserResponse> registrar(@Valid @RequestBody RegisterRequest request) {
-        UserResponse response = userService.register(request);
-        return ResponseEntity.status(201).body(response);
+    @PostMapping("/signup")
+    public ResponseEntity<Users> registrar(@Valid @RequestBody Users request) {
+        Users newUsers = userService.register(request);
+        return ResponseEntity.status(201).body(newUsers);
     }
 
-    // LOGIN
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        AuthResponse response = userService.login(request);
-        return ResponseEntity.ok(response);
+    @PostMapping("/signin")
+    public ResponseEntity<Users> login(@Valid @RequestBody LoginRequest request) {
+        Users logined = userService.login(request);
+        return ResponseEntity.ok(logined);
     }
 }
