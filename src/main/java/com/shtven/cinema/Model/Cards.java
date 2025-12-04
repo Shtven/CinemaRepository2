@@ -1,0 +1,68 @@
+package com.shtven.cinema.Model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "cards")
+public class Cards {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_card")
+    private Long idCard;
+
+    @Column(name = "card_number", nullable = false)
+    private String cardNumber;
+
+    @Column(name = "card_owner", nullable = false)
+    private String cardOwner;
+
+    @Column(name = "expiration_date", nullable = false)
+    private String expirationDate;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private Users user;
+
+    public Long getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(Long idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getCardOwner() {
+        return cardOwner;
+    }
+
+    public void setCardHolder(String cardOwner) {
+        this.cardOwner = cardOwner;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public Users getUsers() {
+        return user;
+    }
+
+    public void setUsers(Users user) {
+        this.user = user;
+    }
+}

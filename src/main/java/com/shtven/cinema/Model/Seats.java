@@ -3,32 +3,33 @@ package com.shtven.cinema.Model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "asiento")
-public class Seat {
+@Table(name = "seats")
+public class Seats {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_asiento")
-    private Long id;
+    @Column(name = "id_seat")
+    private Long idSeat;
 
-    @Column(name = "fila")
+    @Column(name = "row_number", nullable = false)
     private int rowNumber;
 
-    @Column(name = "columna")
+    @Column(name = "column_number", nullable = false)
     private int columnNumber;
 
-    @Column(name = "estado")
+    @Column(name = "status", nullable = false)
     private int status;
 
-    @Column(name = "id_sala")
-    private Long roomId;
+    @ManyToOne
+    @JoinColumn(name = "id_showtime", nullable = false)
+    private Showtimes showtime;
 
-    public Long getId() {
-        return id;
+    public Long getIdSeat() {
+        return idSeat;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdSeat(Long idSeat) {
+        this.idSeat = idSeat;
     }
 
     public int getRowNumber() {
@@ -55,12 +56,11 @@ public class Seat {
         this.status = status;
     }
 
-    public Long getRoomId() {
-        return roomId;
+    public Showtimes getShowtime() {
+        return showtime;
     }
 
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
+    public void setShowtime(Showtimes showtime) {
+        this.showtime = showtime;
     }
-
 }
