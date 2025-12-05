@@ -1,14 +1,10 @@
 package com.shtven.cinema.services;
 
-import com.shtven.cinema.DTO.Mapping.UserMapper;
 import com.shtven.cinema.DTO.Request.LoginRequest;
-import com.shtven.cinema.DTO.Request.RegisterRequest;
-import com.shtven.cinema.DTO.Responsive.AuthResponse;
-import com.shtven.cinema.DTO.Responsive.UserResponse;
-import com.shtven.cinema.Model.User;
+import com.shtven.cinema.Model.Users;
 import com.shtven.cinema.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,25 +14,57 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
-    private UserMapper userMapper;
+    private PasswordEncoder passwordEncoder;
 
-    public UserResponse register(RegisterRequest request) {
-        Optional<User> usr = userRepository.findByEmail(request.getEmail());
+    public Users register(Users request) {
+        Optional<Users> usr = userRepository.findByEmail(request.getEmail());
 
-        if(usr.isPresent()){
-            throw new RuntimeException("User with email " + userRequest.getEmail() + " already exists.");
+        if(usr.isEmpty()){
+            Users newUsers = new Users();
+            newUsers.setFullName(request.getFullName());
+            newUsers.setEmail(request.getEmail());
+            newUsers.setRole("USER");
+            newUsers.setPassword(passwordEncoder.encode(request.getPassword()));
+            userRepository.save(newUsers);
+
+            return newUsers;
         }else{
-            User newUser = userMapper(request);
-            userRepository.save(newUser);
-
-            return userMapper
+            throw new RuntimeException("Users with email " + request.getEmail() + " already exists.");
         }
     }
 
 
-    public AuthResponse login(LoginRequest request) {
+    public Users login(LoginRequest request) {
+        Optional<Users> usr = userRepository.findByEmail(request.getEmail());
 
+        if(usr.isPresent()){
+            Users users = usr.get();
+            if(passwordEncoder.matches(request.getPassword(), users.getPassword())){
+                return usr.get();
+            }else{
+                throw new RuntimeException("Invalid password.");
+            }
+        }else{
+            throw new RuntimeException("Users with email " + request.getEmail() + " not found.");
+        }
+    }
+
+    public void updateUser(Users request, Long idUser) {
+        Optional<Users> usr = userRepository.findById(idUser);
+
+        if(usr.isPresent()){
+            Users users = usr.get();
+            users.setFullName(request.getFullName());
+            users.setEmail(request.getEmail());
+            if(request.getPassword() != null && !request.getPassword().isEmpty()){
+                users.setPassword(passwordEncoder.encode(request.getPassword()));
+            }
+            userRepository.save(users);
+        }else{
+            throw new RuntimeException("Users with id " + idUser + " not found.");
+        }
     }
 }
 

@@ -1,0 +1,61 @@
+package com.shtven.cinema.DTO.Mapping;
+
+import com.shtven.cinema.DTO.Request.ShowtimeRequest;
+import com.shtven.cinema.DTO.Responsive.ShowtimeDetails;
+import com.shtven.cinema.DTO.Responsive.ShowtimesResponsive;
+import com.shtven.cinema.Model.Movies;
+import com.shtven.cinema.Model.Rooms;
+import com.shtven.cinema.Model.Showtimes;
+import com.shtven.cinema.Repository.MovieRepository;
+import com.shtven.cinema.Repository.RoomRepository;
+import com.shtven.cinema.Repository.ShowtimeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+@Component
+public class ShowtimeMapping {
+    @Autowired
+    private SeatMapping seatMapping;
+    @Autowired
+    private ShowtimeRepository showtimeRepository;
+    @Autowired
+    private RoomRepository roomRepository;
+    @Autowired
+    private MovieRepository movieRepository;
+
+    public Showtimes toEntity(ShowtimeRequest request) {
+        Showtimes showtime = new Showtimes();
+        Optional<Rooms> room = roomRepository.findById(request.getRoom());
+        room.ifPresent(showtime::setRoom);
+        Optional<Movies> movie = movieRepository.findById(request.getMovie());
+        movie.ifPresent(showtime::setMovie);
+        showtime.setShowtime(request.getShowtime());
+        showtime.setActive(true);
+        return showtime;
+    }
+
+    public ShowtimesResponsive toResponsive(Showtimes showtime) {
+        ShowtimesResponsive response = new ShowtimesResponsive();
+        response.setRoomName(showtime.getRoom().getName());
+        response.setShowtime(showtime.getShowtime());
+        return response;
+    }
+
+    public ShowtimeDetails viewShowtimeDetails(Long idShowtime) {
+        Optional<Showtimes> showtime = showtimeRepository.findById(idShowtime);
+
+        if(showtime.isPresent()){
+            ShowtimeDetails view = new ShowtimeDetails();
+            view.setMovieTitle(showtime.get().getMovie().getTitle());
+            view.setRoomName(showtime.get().getRoom().getName());
+            view.setShowtime(showtime.get().getShowtime());
+            view.setSeats(seatMapping.buildTicketMatrix(showtime.get().getIdShowtime()));
+
+            return view;
+        }else{
+            throw new RuntimeException("Showtime with id " + idShowtime + " not found.");
+        }
+    }
+}
