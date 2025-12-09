@@ -1,6 +1,7 @@
 package com.shtven.cinema.Controller;
 
 import com.shtven.cinema.DTO.Request.PurchaseRequest;
+import com.shtven.cinema.DTO.Response.PurchaseResponse;
 import com.shtven.cinema.services.PurchaseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 
 @RestController
@@ -23,11 +26,12 @@ public class PurchasesController {
     }
 
     @GetMapping("/{idPurchase}")
-    public ResponseEntity<?> getPurchase(@RequestParam("idPurchase") Long idPurchase) {
-        return ResponseEntity.ok(purchaseService.getPurchaseById(idPurchase));
+    public ResponseEntity<PurchaseResponse> getPurchase(@RequestAttribute("idUser") Long idUser, @PathVariable("idPurchase") Long idPurchase) {
+        return ResponseEntity.ok(purchaseService.getPurchaseByIdForUser(idPurchase, idUser));
     }
 
-    public ResponseEntity<?> getAllPurchasesByUser(@RequestAttribute("idUser") Long idUser){
+    @GetMapping()
+    public ResponseEntity<List<PurchaseResponse>> getAllPurchasesByUser(@RequestAttribute("idUser") Long idUser){
         return ResponseEntity.ok(purchaseService.getAllPurchasesByUser(idUser));
     }
 }

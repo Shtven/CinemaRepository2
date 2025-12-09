@@ -66,5 +66,15 @@ public class UserService {
             throw new RuntimeException("Users with id " + idUser + " not found.");
         }
     }
+
+    public Users getUserDetails(Long idUser) {
+        Optional<Users> usr = userRepository.findById(idUser);
+
+        if(usr.isPresent()){
+            return usr.get();
+        }else{
+            throw new RuntimeException("Users with id " + idUser + " not found.");
+        }
+    }
 }
 

@@ -46,7 +46,7 @@ public class Cards {
         return cardOwner;
     }
 
-    public void setCardHolder(String cardOwner) {
+    public void setCardOwner(String cardOwner) {
         this.cardOwner = cardOwner;
     }
 

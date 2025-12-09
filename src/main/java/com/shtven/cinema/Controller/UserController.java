@@ -6,6 +6,7 @@ import com.shtven.cinema.Model.Users;
 import com.shtven.cinema.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,9 @@ public class UserController {
     private JwtService jwtService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Users> registrar(@Valid @RequestBody Users request) {
-        Users newUsers = userService.register(request);
-        return ResponseEntity.status(201).body(newUsers);
+    public ResponseEntity<Void> register(@Valid @RequestBody Users request) {
+        userService.register(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/signin")
@@ -38,5 +39,17 @@ public class UserController {
         body.put("role", logined.getRole());
 
         return ResponseEntity.ok(body);
+    }
+
+    @PutMapping()
+    public ResponseEntity<Void> update(@RequestAttribute("idUser") Long idUser, @Valid @RequestBody Users request) {
+        userService.updateUser(request, idUser);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<Users> getUserDetails(@RequestAttribute("idUser") Long idUser) {
+        Users userDetails = userService.getUserDetails(idUser);
+        return ResponseEntity.ok(userDetails);
     }
 }
