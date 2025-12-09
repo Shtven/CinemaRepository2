@@ -1,8 +1,8 @@
 package com.shtven.cinema.DTO.Mapping;
 
 import com.shtven.cinema.DTO.Request.ShowtimeRequest;
-import com.shtven.cinema.DTO.Responsive.ShowtimeDetails;
-import com.shtven.cinema.DTO.Responsive.ShowtimesResponsive;
+import com.shtven.cinema.DTO.Response.ShowtimeDetails;
+import com.shtven.cinema.DTO.Response.ShowtimesResponse;
 import com.shtven.cinema.Model.Movies;
 import com.shtven.cinema.Model.Rooms;
 import com.shtven.cinema.Model.Showtimes;
@@ -36,8 +36,8 @@ public class ShowtimeMapping {
         return showtime;
     }
 
-    public ShowtimesResponsive toResponsive(Showtimes showtime) {
-        ShowtimesResponsive response = new ShowtimesResponsive();
+    public ShowtimesResponse toResponsive(Showtimes showtime) {
+        ShowtimesResponse response = new ShowtimesResponse();
         response.setRoomName(showtime.getRoom().getName());
         response.setShowtime(showtime.getShowtime());
         return response;

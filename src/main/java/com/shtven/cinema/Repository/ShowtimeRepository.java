@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface ShowtimeRepository extends JpaRepository<Showtimes, Long> {
@@ -14,4 +15,7 @@ public interface ShowtimeRepository extends JpaRepository<Showtimes, Long> {
 
     @Query("SELECT s FROM Showtimes s WHERE s.movie.idMovie= :idMovie")
     List<Showtimes> findByMovieIdMovie(@Param("idMovie")Long idMovie);
+
+    boolean existsByRoom_IdRoomAndShowtimeAndActiveTrue(Long idRoom, Timestamp showtime);
+
 }

@@ -58,11 +58,11 @@ public class Cards {
         this.expirationDate = expirationDate;
     }
 
-    public Users getUsers() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUsers(Users user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 }

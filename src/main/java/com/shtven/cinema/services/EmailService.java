@@ -16,7 +16,6 @@ import java.nio.file.Files;
 
 @Service
 public class EmailService {
-
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
@@ -35,7 +34,7 @@ public class EmailService {
         helper.setText(htmlBody, true);
 
 
-        byte[] qrBytes = qrCodeService.generateQrPng(qrText, 200, 200);
+        byte[] qrBytes = qrCodeService.generateQrPng(qrText, 120, 120);
 
 
         helper.addInline("qrImage", new ByteArrayResource(qrBytes), "image/png");
@@ -55,7 +54,7 @@ public class EmailService {
 
         String html = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
 
-        html = html.replace("{{PELÍCULA}}", pelicula);
+        html = html.replace("{{PELICULA}}", pelicula);
         html = html.replace("{{SALA}}", sala);
         html = html.replace("{{ASIENTOS}}", asientos);
         html = html.replace("{{FOLIO}}", folio);

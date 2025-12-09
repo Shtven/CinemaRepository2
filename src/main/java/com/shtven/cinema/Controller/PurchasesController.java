@@ -2,6 +2,7 @@ package com.shtven.cinema.Controller;
 
 import com.shtven.cinema.DTO.Request.PurchaseRequest;
 import com.shtven.cinema.services.PurchaseService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,18 @@ public class PurchasesController {
     @Autowired
     private PurchaseService purchaseService;
 
-    @PostMapping("/user/{id}")
-    public ResponseEntity<Void> createPurchase(@PathVariable Long id, @Valid @RequestBody PurchaseRequest request) {
-        purchaseService.savePurchase(request, id);
+    @PostMapping()
+    public ResponseEntity<Void> createPurchase(@RequestAttribute("idUser") Long idUser, @Valid @RequestBody PurchaseRequest request) {
+        purchaseService.savePurchase(request, idUser);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/{idPurchase}")
+    public ResponseEntity<?> getPurchase(@RequestParam("idPurchase") Long idPurchase) {
+        return ResponseEntity.ok(purchaseService.getPurchaseById(idPurchase));
+    }
+
+    public ResponseEntity<?> getAllPurchasesByUser(@RequestAttribute("idUser") Long idUser){
+        return ResponseEntity.ok(purchaseService.getAllPurchasesByUser(idUser));
     }
 }

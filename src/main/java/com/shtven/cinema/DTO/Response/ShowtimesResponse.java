@@ -1,8 +1,8 @@
-package com.shtven.cinema.DTO.Responsive;
+package com.shtven.cinema.DTO.Response;
 
 import java.sql.Timestamp;
 
-public class ShowtimesResponsive {
+public class ShowtimesResponse {
 
     private Timestamp showtime;
     private String roomName;

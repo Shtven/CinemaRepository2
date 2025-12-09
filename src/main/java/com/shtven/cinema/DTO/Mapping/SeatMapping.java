@@ -1,11 +1,13 @@
 package com.shtven.cinema.DTO.Mapping;
 
+import com.shtven.cinema.DTO.Response.SeatsResponse;
 import com.shtven.cinema.Model.Seats;
 import com.shtven.cinema.Model.Showtimes;
 import com.shtven.cinema.Repository.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -38,5 +40,22 @@ public class SeatMapping {
         }
 
         return matrix;
+    }
+
+    public List<SeatsResponse> buildSeatsResponse(List<List<Integer>> seats) {
+        List<SeatsResponse> seatsResponse = new ArrayList<>();
+        for (List<Integer> seat : seats) {
+            int rowIndex = seat.get(0);
+            int colIndex = seat.get(1);
+
+            char rowLetter = (char) ('A' + rowIndex);
+            int col = colIndex + 1;
+
+            SeatsResponse response = new SeatsResponse();
+            response.setSeatNumber(rowLetter + String.valueOf(col));
+            seatsResponse.add(response);
+        }
+
+        return seatsResponse;
     }
 }

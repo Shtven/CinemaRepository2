@@ -33,6 +33,10 @@ public class Movies {
     @Column(name = "active", nullable = false)
     private Boolean active = true;
 
+    @JsonIgnore
+    @Column(name = "poster_path")
+    private String posterPath;
+
     public Long getIdMovie() {
         return idMovie;
     }
@@ -88,4 +92,13 @@ public class Movies {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
 }

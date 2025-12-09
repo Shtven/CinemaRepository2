@@ -1,4 +1,4 @@
-package com.shtven.cinema.DTO.Responsive;
+package com.shtven.cinema.DTO.Response;
 
 import java.sql.Timestamp;
 

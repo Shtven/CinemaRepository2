@@ -1,13 +1,18 @@
 package com.shtven.cinema.Controller;
 
+import com.shtven.cinema.DTO.Response.MovieResponse;
 import com.shtven.cinema.Model.Movies;
 import com.shtven.cinema.services.MovieService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,28 +21,34 @@ public class MoviesController {
     @Autowired
     MovieService movieService;
 
-    @PostMapping
-    public ResponseEntity<Void> saveMovie(@Valid @RequestBody Movies request){
-        movieService.saveMovie(request);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> saveMovie(
+            @Valid @RequestPart("movie") Movies request,
+            @RequestPart(value = "file", required = false) MultipartFile file
+    ) throws IOException {
+        movieService.saveMovie(request, file);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping ("/{id}")
-    public ResponseEntity<Void> deleteMOvie (@PathVariable Long id){
-        movieService.deleteMovie(id);
+    @DeleteMapping ("/{idMovie}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteMovie (@PathVariable Long idMovie){
+        movieService.deleteMovie(idMovie);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping ("/{id}")
-    public ResponseEntity<Void> updateMovie (@PathVariable Long id, @Valid @RequestBody Movies request){
-        movieService.updateMovie(request, id);
+    @PutMapping ("/{idMovie}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> updateMovie (@PathVariable Long idMovie, @Valid @RequestBody Movies request){
+        movieService.updateMovie(request, idMovie);
         return ResponseEntity.ok().build();
 
     }
 
     @GetMapping
-    public ResponseEntity<List<Movies>> getAllMovies (){
-        List<Movies> movies = movieService.getAllActiveMovies();
+    public ResponseEntity<List<MovieResponse>> getAllMovies (){
+        List<MovieResponse> movies = movieService.getAllActiveMovies();
         return ResponseEntity.ok(movies);
     }
 
