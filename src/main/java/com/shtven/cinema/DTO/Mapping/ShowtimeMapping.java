@@ -38,6 +38,7 @@ public class ShowtimeMapping {
 
     public ShowtimesResponse toResponsive(Showtimes showtime) {
         ShowtimesResponse response = new ShowtimesResponse();
+        response.setId(showtime.getIdShowtime());
         response.setRoomName(showtime.getRoom().getName());
         response.setShowtime(showtime.getShowtime());
         return response;

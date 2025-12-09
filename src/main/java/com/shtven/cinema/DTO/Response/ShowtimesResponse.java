@@ -4,8 +4,16 @@ import java.sql.Timestamp;
 
 public class ShowtimesResponse {
 
+    private Long id;
     private Timestamp showtime;
     private String roomName;
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Timestamp getShowtime() {
         return showtime;
