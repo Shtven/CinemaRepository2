@@ -1,8 +1,10 @@
 package com.shtven.cinema.services;
 
 import com.google.zxing.WriterException;
+import com.shtven.cinema.DTO.Mapping.PurchaseMapping;
 import com.shtven.cinema.DTO.Mapping.SeatMapping;
 import com.shtven.cinema.DTO.Request.PurchaseRequest;
+import com.shtven.cinema.DTO.Response.PurchaseResponse;
 import com.shtven.cinema.DTO.Response.SeatsResponse;
 import com.shtven.cinema.Model.Movies;
 import com.shtven.cinema.Model.Purchases;
@@ -36,6 +38,8 @@ public class PurchaseService {
     @Autowired
     private PurchaseRepository purchaseRepository;
     @Autowired
+    private PurchaseMapping purchaseMapping;
+    @Autowired
     private EmailService emailService;
 
     public void savePurchase(PurchaseRequest purchaseRequest, Long userId) {
@@ -51,13 +55,14 @@ public class PurchaseService {
                 if (movie.isPresent()) {
                     double totalAmount = movie.get().getPrice() * purchaseRequest.getSeats().size();
                     purchases.setTotalAmount(totalAmount);
-                    seatMapping.saveSeats(purchaseRequest.getSeats(), showtime.get());
 
                     purchases = purchaseRepository.save(purchases);
 
+                    seatMapping.saveSeats(purchaseRequest.getSeats(), showtime.get(), purchases);
+
                     String movies = movie.get().getTitle();
                     String rooms = showtime.get().getRoom().getName();
-                    String seats = seatMapping.buildSeatsResponse(purchaseRequest.getSeats())
+                    String seats = seatMapping.buildSeatsResponse(purchases.getSeats())
                             .stream()
                             .map(SeatsResponse::getSeatNumber)
                             .collect(Collectors.joining(", "));
@@ -75,13 +80,20 @@ public class PurchaseService {
         }
     }
 
-    public Purchases getPurchaseById(Long idPurchase) {
-        Optional<Purchases> purchase = purchaseRepository.findById(idPurchase);
-        return purchase.orElse(null);
+    public PurchaseResponse getPurchaseByIdForUser(Long idPurchase, Long userId) {
+        Purchases purchase = purchaseRepository.findById(idPurchase)
+                .orElseThrow(() -> new RuntimeException("Purchase not found"));
+
+        if (!purchase.getUser().getIdUser().equals(userId)) {
+            throw new RuntimeException("You cannot access this purchase");
+        }
+
+        return purchaseMapping.purchaseView(purchase);
     }
 
-    public List<Purchases> getAllPurchasesByUser(Long userId) {
-        return purchaseRepository.getAllPurchasesByUser(userId);
+    public List<PurchaseResponse> getAllPurchasesByUser(Long userId) {
+        return purchaseRepository.getAllPurchasesByUser(userId)
+                .stream().map(purchaseMapping::purchaseView).toList();
     }
 
 }

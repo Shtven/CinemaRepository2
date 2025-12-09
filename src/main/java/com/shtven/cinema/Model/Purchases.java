@@ -3,6 +3,7 @@ package com.shtven.cinema.Model;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "purchases")
@@ -27,6 +28,9 @@ public class Purchases {
     @Column(name = "total_amount", nullable = false)
     private Double totalAmount;
 
+    @OneToMany(mappedBy = "purchase")
+    private List<Seats> seats;
+
     public Long getIdPurchase() {
         return idPurchase;
     }
@@ -43,7 +47,7 @@ public class Purchases {
         this.date = date;
     }
 
-    public Users getUsers() {
+    public Users getUser() {
         return user;
     }
 
@@ -63,8 +67,15 @@ public class Purchases {
         return totalAmount;
     }
 
-
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public List<Seats> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seats> seats) {
+        this.seats = seats;
     }
 }

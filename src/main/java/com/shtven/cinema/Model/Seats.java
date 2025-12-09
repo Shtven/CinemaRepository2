@@ -24,6 +24,10 @@ public class Seats {
     @JoinColumn(name = "id_showtime", nullable = false)
     private Showtimes showtime;
 
+    @ManyToOne
+    @JoinColumn(name = "id_purchase", nullable = false)
+    private Purchases purchase;
+
     public Long getIdSeat() {
         return idSeat;
     }
@@ -62,5 +66,13 @@ public class Seats {
 
     public void setShowtime(Showtimes showtime) {
         this.showtime = showtime;
+    }
+
+    public Purchases getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(Purchases purchase) {
+        this.purchase = purchase;
     }
 }

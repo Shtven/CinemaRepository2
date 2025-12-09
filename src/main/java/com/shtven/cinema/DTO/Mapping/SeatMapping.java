@@ -1,6 +1,7 @@
 package com.shtven.cinema.DTO.Mapping;
 
 import com.shtven.cinema.DTO.Response.SeatsResponse;
+import com.shtven.cinema.Model.Purchases;
 import com.shtven.cinema.Model.Seats;
 import com.shtven.cinema.Model.Showtimes;
 import com.shtven.cinema.Repository.SeatRepository;
@@ -16,7 +17,8 @@ public class SeatMapping {
     @Autowired
     private SeatRepository seatRepository;
 
-    public void saveSeats(List<List<Integer>> seats, Showtimes showtimes) {
+    public void saveSeats(List<List<Integer>> seats, Showtimes showtimes, Purchases purchase) {
+        List<Seats> seatsList = new ArrayList<>();
         for (List<Integer> seat : seats) {
             int row = seat.get(0);
             int col = seat.get(1);
@@ -25,8 +27,11 @@ public class SeatMapping {
             seatsEntity.setColumnNumber(col);
             seatsEntity.setStatus(1);
             seatsEntity.setShowtime(showtimes);
+            seatsEntity.setPurchase(purchase);
             seatRepository.save(seatsEntity);
+            seatsList.add(seatsEntity);
         }
+        purchase.setSeats(seatsList);
     }
 
     public int[][] buildTicketMatrix(Long showtimeId) {
@@ -42,11 +47,11 @@ public class SeatMapping {
         return matrix;
     }
 
-    public List<SeatsResponse> buildSeatsResponse(List<List<Integer>> seats) {
+    public List<SeatsResponse> buildSeatsResponse(List<Seats> seats) {
         List<SeatsResponse> seatsResponse = new ArrayList<>();
-        for (List<Integer> seat : seats) {
-            int rowIndex = seat.get(0);
-            int colIndex = seat.get(1);
+        for (Seats seat : seats) {
+            int rowIndex = seat.getRowNumber();
+            int colIndex = seat.getColumnNumber();
 
             char rowLetter = (char) ('A' + rowIndex);
             int col = colIndex + 1;
