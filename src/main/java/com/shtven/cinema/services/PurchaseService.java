@@ -3,6 +3,7 @@ package com.shtven.cinema.services;
 import com.google.zxing.WriterException;
 import com.shtven.cinema.DTO.Mapping.SeatMapping;
 import com.shtven.cinema.DTO.Request.PurchaseRequest;
+import com.shtven.cinema.DTO.Response.SeatsResponse;
 import com.shtven.cinema.Model.Movies;
 import com.shtven.cinema.Model.Purchases;
 import com.shtven.cinema.Model.Showtimes;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,17 +55,17 @@ public class PurchaseService {
 
                     purchases = purchaseRepository.save(purchases);
 
-                    String pelicula = movie.get().getTitle();
-                    String sala = showtime.get().getRoom().getName();
-                    String asientos = purchaseRequest.getSeats()
+                    String movies = movie.get().getTitle();
+                    String rooms = showtime.get().getRoom().getName();
+                    String seats = seatMapping.buildSeatsResponse(purchaseRequest.getSeats())
                             .stream()
-                            .map(Object::toString)
+                            .map(SeatsResponse::getSeatNumber)
                             .collect(Collectors.joining(", "));
                     String folio = "CP-" + purchases.getIdPurchase();
                     String total = String.format("$%.2f", purchases.getTotalAmount());
 
                     try{
-                        emailService.loadHtmlTemplatePurchaseAndSend(pelicula, sala, asientos, folio, total, user.get().getEmail());
+                        emailService.loadHtmlTemplatePurchaseAndSend(movies, rooms, seats, folio, total, user.get().getEmail());
                     }catch(MessagingException | IOException | WriterException ex){
                         throw new RuntimeException("Failed to send confirmation email: " + ex.getMessage());
                     }
@@ -72,4 +74,14 @@ public class PurchaseService {
             }
         }
     }
+
+    public Purchases getPurchaseById(Long idPurchase) {
+        Optional<Purchases> purchase = purchaseRepository.findById(idPurchase);
+        return purchase.orElse(null);
+    }
+
+    public List<Purchases> getAllPurchasesByUser(Long userId) {
+        return purchaseRepository.getAllPurchasesByUser(userId);
+    }
+
 }

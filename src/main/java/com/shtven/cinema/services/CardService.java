@@ -21,15 +21,20 @@ public class CardService {
     public void saveCard(Cards card, Long userId) {
         Optional<Users> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            card.setUsers(user.get());
+            card.setUser(user.get());
             cardRepository.save(card);
         } else {
             throw new RuntimeException("User with ID " + userId + " not found.");
         }
     }
 
-    public void DeleteCard(Long cardId) {
-        cardRepository.deleteById(cardId);
+    public void deleteCard(Long cardId, Long userId) {
+        Optional<Cards> optionalCard = cardRepository.findByIdCardAndIdUser(cardId, userId);
+        if(optionalCard.isPresent()) {
+            cardRepository.delete(optionalCard.get());
+        }else{
+            throw new RuntimeException("Card with ID " + cardId + " not found for User ID " + userId + ".");
+        }
     }
 
     public List<Cards> findAllByUser(Long userId) {

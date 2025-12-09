@@ -1,13 +1,14 @@
 package com.shtven.cinema.Controller;
 
 import com.shtven.cinema.DTO.Request.ShowtimeRequest;
-import com.shtven.cinema.DTO.Responsive.ShowtimeDetails;
-import com.shtven.cinema.DTO.Responsive.ShowtimesResponsive;
+import com.shtven.cinema.DTO.Response.ShowtimeDetails;
+import com.shtven.cinema.DTO.Response.ShowtimesResponse;
 import com.shtven.cinema.services.ShowtimeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,32 +21,33 @@ public class ShowtimesController {
     private ShowtimeService showtimeService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createShowtime (@Valid @RequestBody ShowtimeRequest request){
         showtimeService.createShowtime(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping ("/{id}")
-    public ResponseEntity<Void> updateShowtime (@PathVariable Long id, @Valid @RequestBody ShowtimeRequest request){
-        showtimeService.updateShowtime(id, request);
+    @PutMapping ("/{idShowtime}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> updateShowtime (@PathVariable Long idShowtime, @Valid @RequestBody ShowtimeRequest request){
+        showtimeService.updateShowtime(idShowtime, request);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping ("/{id}")
-    public ResponseEntity<Void> deleteShowtime (@PathVariable Long id){
-        showtimeService.deleteShowtime(id);
+    @DeleteMapping ("/{idShowtime}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteShowtime (@PathVariable Long idShowtime){
+        showtimeService.deleteShowtime(idShowtime);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/movie/{id}")
-    public ResponseEntity<List<ShowtimesResponsive>> getShowtimesFromMovie(@PathVariable Long id) {
-        List<ShowtimesResponsive> showtimes = showtimeService.getShowtimesFromMovie(id);
-        return ResponseEntity.ok(showtimes);
+    @GetMapping("/movie/{idMovie}")
+    public ResponseEntity<List<ShowtimesResponse>> getShowtimesFromMovie(@PathVariable Long idMovie) {
+        return ResponseEntity.ok(showtimeService.getShowtimesFromMovie(idMovie));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ShowtimeDetails> getShowtimeDetails(@PathVariable Long id ) {
-        ShowtimeDetails details = showtimeService.getShowtimeDetails(id);
-        return ResponseEntity.ok(details);
+        return ResponseEntity.ok(showtimeService.getShowtimeDetails(id));
     }
 }

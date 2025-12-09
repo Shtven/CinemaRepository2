@@ -20,7 +20,7 @@ public class Rooms {
 
     @JsonIgnore
     @Column(name = "status", nullable = false)
-    private String status;
+    private boolean status = true;
 
     public Long getIdRoom() {
         return idRoom;
@@ -46,11 +46,11 @@ public class Rooms {
         this.type = type;
     }
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 }
