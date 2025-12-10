@@ -52,7 +52,10 @@ public class EmailService {
         ClassPathResource resource =
                 new ClassPathResource("templates/email/Purchase.html");
 
-        String html = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
+        String html;
+        try (var in = resource.getInputStream()) {
+            html = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+        }
 
         html = html.replace("{{PELICULA}}", pelicula);
         html = html.replace("{{SALA}}", sala);
