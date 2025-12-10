@@ -72,7 +72,7 @@ public class PurchaseService {
                     try{
                         emailService.loadHtmlTemplatePurchaseAndSend(movies, rooms, seats, folio, total, user.get().getEmail());
                     }catch(MessagingException | IOException | WriterException ex){
-                        throw new RuntimeException("Failed to send confirmation email: " + ex.getMessage());
+                        ex.printStackTrace();
                     }
                 }
 
