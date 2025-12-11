@@ -3,8 +3,7 @@ package com.shtven.cinema.services;
 import com.google.zxing.WriterException;
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
-import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.*;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -29,11 +28,23 @@ public class EmailService {
         this.qrCodeService = qrCodeService;
     }
 
-    private void sendEmail(String to, String subject, String htmlBody) throws MessagingException {
+    private void sendEmail(String to, String subject, String htmlBody, byte[] qrBytes)
+            throws MessagingException {
+
         Email from = new Email(fromEmail);
         Email toEmail = new Email(to);
         Content content = new Content("text/html", htmlBody);
         Mail mail = new Mail(from, subject, toEmail, content);
+
+        if (qrBytes != null && qrBytes.length > 0) {
+            Attachments attachment = new Attachments();
+            attachment.setContent(Base64.getEncoder().encodeToString(qrBytes));
+            attachment.setType("image/png");
+            attachment.setFilename("qr.png");
+            attachment.setDisposition("inline");
+            attachment.setContentId("qrImage");
+            mail.addAttachments(attachment);
+        }
 
         SendGrid sg = new SendGrid(sendgridApiKey);
         Request request = new Request();
@@ -46,6 +57,9 @@ public class EmailService {
             Response response = sg.api(request);
 
             int status = response.getStatusCode();
+            System.out.println("SendGrid status: " + status);
+            System.out.println("SendGrid body: " + response.getBody());
+
             if (status >= 400) {
                 throw new MessagingException(
                         "Error enviando correo via SendGrid. Status: "
@@ -81,10 +95,7 @@ public class EmailService {
 
         String qrText = folio;
         byte[] qrBytes = qrCodeService.generateQrPng(qrText, 120, 120);
-        String qrBase64 = Base64.getEncoder().encodeToString(qrBytes);
 
-        html = html.replace("{{QR_BASE64}}", qrBase64);
-
-        sendEmail(email, "Confirmación de compra", html);
+        sendEmail(email, "Confirmación de compra", html, qrBytes);
     }
 }
