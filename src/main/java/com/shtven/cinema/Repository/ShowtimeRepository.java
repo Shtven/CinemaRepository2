@@ -18,4 +18,7 @@ public interface ShowtimeRepository extends JpaRepository<Showtimes, Long> {
 
     boolean existsByRoom_IdRoomAndShowtimeAndActiveTrue(Long idRoom, Timestamp showtime);
 
+    @Query("SELECT s FROM Showtimes s WHERE LOWER(s.movie.title) LIKE LOWER(CONCAT('%', :titleSearch, '%')) AND s.active=true")
+    List<Showtimes> findByMovieTitle(@Param("titleSearch")String titleSearch);
+
 }

@@ -20,6 +20,7 @@ public class PurchaseMapping {
 
     public PurchaseResponse purchaseView(Purchases purchase) {
         PurchaseResponse response = new PurchaseResponse();
+        response.setId(purchase.getIdPurchase());
         String folio = "CP-" + purchase.getIdPurchase();
         response.setFolio(folio);
         response.setMovieTitle(purchase.getShowtime().getMovie().getTitle());

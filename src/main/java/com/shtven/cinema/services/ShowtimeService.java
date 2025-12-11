@@ -57,6 +57,16 @@ public class ShowtimeService {
         return showtimeMapping.viewShowtimeDetails(idShowtime);
     }
 
+    public List<ShowtimesResponse> getAllShowtimes() {
+        return showtimeRepository.findAll().stream().map(showtimeMapping::toResponsive).toList();
+    }
+
+    public List<ShowtimesResponse> getShowtimesByMovieName(String titleSearch) {
+        return showtimeRepository.findByMovieTitle(titleSearch).stream()
+                .map(showtimeMapping::toResponsive)
+                .toList();
+    }
+
     @Scheduled(fixedRate = 60_000)
     @Transactional
     protected void validateStatusShowtime() {

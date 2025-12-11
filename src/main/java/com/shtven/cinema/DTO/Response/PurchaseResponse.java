@@ -1,12 +1,21 @@
 package com.shtven.cinema.DTO.Response;
 
 public class PurchaseResponse {
+    public Long id;
     private String movieTitle;
     private String roomName;
     private String seats;
     private String folio;
     private String totalAmount;
     private String qrImageBase64;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getMovieTitle() {
         return movieTitle;

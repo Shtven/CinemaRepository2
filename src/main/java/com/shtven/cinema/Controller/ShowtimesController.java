@@ -50,4 +50,10 @@ public class ShowtimesController {
     public ResponseEntity<ShowtimeDetails> getShowtimeDetails(@PathVariable Long id ) {
         return ResponseEntity.ok(showtimeService.getShowtimeDetails(id));
     }
+
+    @GetMapping("/search/{titleSearch}")
+    public ResponseEntity<List<ShowtimesResponse>> getShowtimesByMovieName(@PathVariable String titleSearch) {
+        return ResponseEntity.ok(showtimeService.getShowtimesByMovieName(titleSearch));
+    }
+
 }
