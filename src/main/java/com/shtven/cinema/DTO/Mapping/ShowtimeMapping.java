@@ -41,6 +41,9 @@ public class ShowtimeMapping {
         response.setId(showtime.getIdShowtime());
         response.setRoomName(showtime.getRoom().getName());
         response.setShowtime(showtime.getShowtime());
+        response.setMovieTitle(showtime.getMovie().getTitle());
+        response.setMovieLanguage(showtime.getMovie().getLanguage());
+        response.setRoomType(showtime.getRoom().getType());
         return response;
     }
 
