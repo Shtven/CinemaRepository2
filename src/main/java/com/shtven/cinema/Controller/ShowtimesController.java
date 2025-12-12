@@ -55,5 +55,10 @@ public class ShowtimesController {
     public ResponseEntity<List<ShowtimesResponse>> getShowtimesByMovieName(@PathVariable String titleSearch) {
         return ResponseEntity.ok(showtimeService.getShowtimesByMovieName(titleSearch));
     }
+    
+    @GetMapping()
+    public ResponseEntity<List<ShowtimesResponse>> getAllShowtimes() {
+        return ResponseEntity.ok(showtimeService.getAllShowtimes());
+    }
 
 }
