@@ -52,4 +52,9 @@ public class MoviesController {
         return ResponseEntity.ok(movies);
     }
 
+    @GetMapping("/{searchTitle}")
+    public ResponseEntity<List<MovieResponse>> getMoviesByTitle(@PathVariable String searchTitle){
+        return ResponseEntity.ok(movieService.findByMovieTitle(searchTitle));
+    }
+
 }

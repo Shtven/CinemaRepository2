@@ -32,17 +32,18 @@ public class ShowtimeMapping {
         Optional<Movies> movie = movieRepository.findById(request.getMovie());
         movie.ifPresent(showtime::setMovie);
         showtime.setShowtime(request.getShowtime());
+        showtime.setLanguage(request.getLanguage());
         showtime.setActive(true);
         return showtime;
     }
 
-    public ShowtimesResponse toResponsive(Showtimes showtime) {
+    public ShowtimesResponse toResponse(Showtimes showtime) {
         ShowtimesResponse response = new ShowtimesResponse();
         response.setId(showtime.getIdShowtime());
         response.setRoomName(showtime.getRoom().getName());
         response.setShowtime(showtime.getShowtime());
         response.setMovieTitle(showtime.getMovie().getTitle());
-        response.setMovieLanguage(showtime.getMovie().getLanguage());
+        response.setMovieLanguage(showtime.getLanguage());
         response.setRoomType(showtime.getRoom().getType());
         return response;
     }

@@ -26,9 +26,6 @@ public class Movies {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "language", nullable = false)
-    private String language;
-
     @JsonIgnore
     @Column(name = "active", nullable = false)
     private Boolean active = true;
@@ -75,14 +72,6 @@ public class Movies {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     public Boolean getActive() {
