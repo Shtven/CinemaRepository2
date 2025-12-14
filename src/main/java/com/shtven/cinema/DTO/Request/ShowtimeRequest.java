@@ -12,6 +12,8 @@ public class ShowtimeRequest {
 
     private Timestamp showtime;
 
+    private String language;
+
     public Long getRoom() {
         return room;
     }
@@ -34,5 +36,13 @@ public class ShowtimeRequest {
 
     public void setShowtime(Timestamp showtime) {
         this.showtime = showtime;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

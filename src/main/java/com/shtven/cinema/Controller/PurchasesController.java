@@ -3,7 +3,6 @@ package com.shtven.cinema.Controller;
 import com.shtven.cinema.DTO.Request.PurchaseRequest;
 import com.shtven.cinema.DTO.Response.PurchaseResponse;
 import com.shtven.cinema.services.PurchaseService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

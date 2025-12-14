@@ -7,6 +7,7 @@ public class MovieResponse {
     private String genre;
     private int duration;
     private String posterPath;
+    private String active;
 
     public Long getId() {
         return id;
@@ -46,5 +47,13 @@ public class MovieResponse {
 
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
     }
 }

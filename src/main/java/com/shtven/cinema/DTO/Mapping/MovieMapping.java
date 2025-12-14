@@ -17,6 +17,11 @@ public class MovieMapping {
                         + movie.getDuration().getMinute();
         response.setDuration(totalMinutes);
         response.setPosterPath(movie.getPosterPath());
+        if(movie.getActive()){
+            response.setActive("Active");
+        }else{
+            response.setActive("Inactive");
+        }
 
         return response;
     }

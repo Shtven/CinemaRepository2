@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -44,13 +45,30 @@ public class ShowtimeService {
     }
 
     public void updateShowtime(Long idShowtime, ShowtimeRequest request) {
-        Showtimes showtime = showtimeMapping.toEntity(request);
-        showtime.setIdShowtime(idShowtime);
-        showtimeRepository.save(showtime);
+        Optional<Showtimes> showtimes = showtimeRepository.findById(idShowtime);
+        if (showtimes.isPresent()) {
+            boolean exists = showtimeRepository.existsByRoom_IdRoomAndShowtimeAndActiveTrue(request.getRoom(), request.getShowtime());
+
+            if (exists) {
+                throw new RuntimeException("Showtime already exists for the given room and time.");
+            }
+
+            Showtimes showtime = showtimeMapping.toEntity(request);
+            showtimes.get().setMovie(showtime.getMovie());
+            showtimes.get().setRoom(showtime.getRoom());
+            showtimes.get().setShowtime(showtime.getShowtime());
+            showtimes.get().setLanguage(showtime.getLanguage());
+            showtimes.get().setActive(showtime.getActive());
+
+            showtimeRepository.save(showtimes.get());
+
+        }else{
+            throw new RuntimeException("Showtime with id " + idShowtime + " not found.");
+        }
     }
 
     public List<ShowtimesResponse> getShowtimesFromMovie(Long idMovie) {
-        return showtimeRepository.findByMovieIdMovie(idMovie).stream().map(showtimeMapping::toResponsive).toList();
+        return showtimeRepository.findByMovieIdMovie(idMovie).stream().map(showtimeMapping::toResponse).toList();
     }
 
     public ShowtimeDetails getShowtimeDetails(Long idShowtime) {
@@ -58,12 +76,12 @@ public class ShowtimeService {
     }
 
     public List<ShowtimesResponse> getAllShowtimes() {
-        return showtimeRepository.findAll().stream().map(showtimeMapping::toResponsive).toList();
+        return showtimeRepository.findAll().stream().map(showtimeMapping::toResponse).toList();
     }
 
     public List<ShowtimesResponse> getShowtimesByMovieName(String titleSearch) {
         return showtimeRepository.findByMovieTitle(titleSearch).stream()
-                .map(showtimeMapping::toResponsive)
+                .map(showtimeMapping::toResponse)
                 .toList();
     }
 
