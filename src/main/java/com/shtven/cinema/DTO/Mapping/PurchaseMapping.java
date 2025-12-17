@@ -3,7 +3,7 @@ package com.shtven.cinema.DTO.Mapping;
 import com.shtven.cinema.DTO.Response.PurchaseResponse;
 import com.shtven.cinema.DTO.Response.SeatsResponse;
 import com.shtven.cinema.Model.Purchases;
-import com.shtven.cinema.services.QrCodeService;
+import com.shtven.cinema.Service.QrCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

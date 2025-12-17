@@ -1,4 +1,4 @@
-package com.shtven.cinema.services;
+package com.shtven.cinema.Service;
 
 import com.shtven.cinema.DTO.Response.StatsResponse;
 import com.shtven.cinema.Repository.MovieRepository;

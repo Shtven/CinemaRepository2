@@ -1,4 +1,4 @@
-package com.shtven.cinema.services;
+package com.shtven.cinema.Service;
 
 import com.shtven.cinema.DTO.Mapping.ShowtimeMapping;
 import com.shtven.cinema.DTO.Request.ShowtimeRequest;
@@ -8,6 +8,7 @@ import com.shtven.cinema.Model.Rooms;
 import com.shtven.cinema.Model.Showtimes;
 import com.shtven.cinema.Repository.RoomRepository;
 import com.shtven.cinema.Repository.ShowtimeRepository;
+import com.shtven.cinema.exceptions.BusinessException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -33,7 +34,7 @@ public class ShowtimeService {
         boolean exists = showtimeRepository.existsByRoom_IdRoomAndShowtimeAndActiveTrue(request.getRoom(), request.getShowtime());
 
         if (exists) {
-            throw new RuntimeException("Showtime already exists for the given room and time.");
+            throw new BusinessException("Showtime already exists for the given room and time.");
         }
 
         Showtimes showtime = showtimeMapping.toEntity(request);
@@ -50,7 +51,7 @@ public class ShowtimeService {
             boolean exists = showtimeRepository.existsByRoom_IdRoomAndShowtimeAndActiveTrue(request.getRoom(), request.getShowtime());
 
             if (exists) {
-                throw new RuntimeException("Showtime already exists for the given room and time.");
+                throw new BusinessException("Showtime already exists for the given room and time.");
             }
 
             Showtimes showtime = showtimeMapping.toEntity(request);
@@ -63,7 +64,7 @@ public class ShowtimeService {
             showtimeRepository.save(showtimes.get());
 
         }else{
-            throw new RuntimeException("Showtime with id " + idShowtime + " not found.");
+            throw new BusinessException("Showtime with id " + idShowtime + " not found.");
         }
     }
 

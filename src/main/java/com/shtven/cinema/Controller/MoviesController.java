@@ -2,7 +2,7 @@ package com.shtven.cinema.Controller;
 
 import com.shtven.cinema.DTO.Response.MovieResponse;
 import com.shtven.cinema.Model.Movies;
-import com.shtven.cinema.services.MovieService;
+import com.shtven.cinema.Service.MovieService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

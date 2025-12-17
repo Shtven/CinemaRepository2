@@ -1,4 +1,4 @@
-package com.shtven.cinema.services;
+package com.shtven.cinema.Service;
 
 import com.shtven.cinema.DTO.Request.LoginRequest;
 import com.shtven.cinema.Model.Users;

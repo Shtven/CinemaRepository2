@@ -1,4 +1,4 @@
-package com.shtven.cinema.services;
+package com.shtven.cinema.Service;
 
 import com.google.zxing.WriterException;
 import com.sendgrid.*;

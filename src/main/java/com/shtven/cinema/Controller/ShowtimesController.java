@@ -3,7 +3,7 @@ package com.shtven.cinema.Controller;
 import com.shtven.cinema.DTO.Request.ShowtimeRequest;
 import com.shtven.cinema.DTO.Response.ShowtimeDetails;
 import com.shtven.cinema.DTO.Response.ShowtimesResponse;
-import com.shtven.cinema.services.ShowtimeService;
+import com.shtven.cinema.Service.ShowtimeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

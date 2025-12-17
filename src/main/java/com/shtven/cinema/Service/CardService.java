@@ -1,9 +1,10 @@
-package com.shtven.cinema.services;
+package com.shtven.cinema.Service;
 
 import com.shtven.cinema.Model.Cards;
 import com.shtven.cinema.Model.Users;
 import com.shtven.cinema.Repository.CardRepository;
 import com.shtven.cinema.Repository.UserRepository;
+import com.shtven.cinema.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class CardService {
             card.setUser(user.get());
             cardRepository.save(card);
         } else {
-            throw new RuntimeException("User with ID " + userId + " not found.");
+            throw new BusinessException("User with ID " + userId + " not found.");
         }
     }
 
@@ -33,7 +34,7 @@ public class CardService {
         if(optionalCard.isPresent()) {
             cardRepository.delete(optionalCard.get());
         }else{
-            throw new RuntimeException("Card with ID " + cardId + " not found for User ID " + userId + ".");
+            throw new BusinessException("Card with ID " + cardId + " not found for User ID " + userId + ".");
         }
     }
 

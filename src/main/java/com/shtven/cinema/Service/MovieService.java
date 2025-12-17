@@ -1,4 +1,4 @@
-package com.shtven.cinema.services;
+package com.shtven.cinema.Service;
 
 
 import com.cloudinary.Cloudinary;
@@ -7,6 +7,7 @@ import com.shtven.cinema.DTO.Mapping.MovieMapping;
 import com.shtven.cinema.DTO.Response.MovieResponse;
 import com.shtven.cinema.Model.Movies;
 import com.shtven.cinema.Repository.MovieRepository;
+import com.shtven.cinema.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +45,7 @@ public class MovieService {
             movies.setActive(false);
             movieRepository.save(movies);
         }else{
-            throw new RuntimeException("Movie with id " + idMovie + " not found.");
+            throw new BusinessException("Movie with id " + idMovie + " not found.");
         }
     }
 
@@ -58,7 +59,7 @@ public class MovieService {
             movies.setGenre(request.getGenre());
             movieRepository.save(movies);
         }else{
-            throw new RuntimeException("Movie with id " + idMovie + " not found.");
+            throw new BusinessException("Movie with id " + idMovie + " not found.");
         }
     }
 
@@ -81,7 +82,7 @@ public class MovieService {
             return (String) uploadResult.get("secure_url");
 
         } catch (IOException e) {
-            throw new RuntimeException("Error uploading poster to Cloudinary: " + e.getMessage(), e);
+            throw new BusinessException("Error uploading poster to Cloudinary: " + e.getMessage());
         }
     }
 
