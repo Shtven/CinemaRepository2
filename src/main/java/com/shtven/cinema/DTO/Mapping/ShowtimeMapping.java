@@ -56,6 +56,7 @@ public class ShowtimeMapping {
             view.setMovieTitle(showtime.get().getMovie().getTitle());
             view.setRoomName(showtime.get().getRoom().getName());
             view.setShowtime(showtime.get().getShowtime());
+            view.setPriceSeats(showtime.get().getMovie().getPrice());
             view.setSeats(seatMapping.buildTicketMatrix(showtime.get().getIdShowtime()));
 
             return view;

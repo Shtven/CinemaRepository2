@@ -3,7 +3,7 @@ package com.shtven.cinema.Controller;
 import com.shtven.cinema.Configuration.JwtService;
 import com.shtven.cinema.DTO.Request.LoginRequest;
 import com.shtven.cinema.Model.Users;
-import com.shtven.cinema.services.UserService;
+import com.shtven.cinema.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

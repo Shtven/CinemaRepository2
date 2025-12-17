@@ -7,6 +7,7 @@ public class ShowtimeDetails {
     private String movieTitle;
     private String roomName;
     private Timestamp showtime;
+    private double priceSeats;
     private int[][] seats;
 
     public String getMovieTitle() {
@@ -31,6 +32,14 @@ public class ShowtimeDetails {
 
     public void setShowtime(Timestamp showtime) {
         this.showtime = showtime;
+    }
+
+    public double getPriceSeats() {
+        return priceSeats;
+    }
+
+    public void setPriceSeats(double priceSeats) {
+        this.priceSeats = priceSeats;
     }
 
     public int[][] getSeats() {

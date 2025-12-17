@@ -1,4 +1,4 @@
-package com.shtven.cinema.services;
+package com.shtven.cinema.Service;
 
 import com.google.zxing.WriterException;
 import com.shtven.cinema.DTO.Mapping.PurchaseMapping;
@@ -14,6 +14,7 @@ import com.shtven.cinema.Repository.MovieRepository;
 import com.shtven.cinema.Repository.PurchaseRepository;
 import com.shtven.cinema.Repository.ShowtimeRepository;
 import com.shtven.cinema.Repository.UserRepository;
+import com.shtven.cinema.exceptions.BusinessException;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,10 +83,10 @@ public class PurchaseService {
 
     public PurchaseResponse getPurchaseByIdForUser(Long idPurchase, Long userId) {
         Purchases purchase = purchaseRepository.findById(idPurchase)
-                .orElseThrow(() -> new RuntimeException("Purchase not found"));
+                .orElseThrow(() -> new BusinessException("Purchase not found"));
 
         if (!purchase.getUser().getIdUser().equals(userId)) {
-            throw new RuntimeException("You cannot access this purchase");
+            throw new BusinessException("You cannot access this purchase");
         }
 
         return purchaseMapping.purchaseView(purchase);
